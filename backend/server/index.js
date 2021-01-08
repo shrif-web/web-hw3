@@ -2,10 +2,11 @@ express =require('express');
 Parse = require('parse/node');
 Parse.initialize("myAppId");
 Parse.serverURL = 'http://localhost:1337/parse'
+Parse.User.enableUnsafeCurrentUser()
 const app = express();
  
 
-app.use(bodyP.urlencoded({extended:false})); 
+app.use(express.urlencoded({extended:false})); 
 app.post('/api/signup', async (req, res) => {
   console.log(req.body);
   const user = new Parse.User();
@@ -18,10 +19,29 @@ app.post('/api/signup', async (req, res) => {
     return res.send('success pm');
   } catch (error) {
     console.log(error);
-    return res.send('error pm');
+    return res.send(error);
 }
 });
- 
+  
+app.post('/api/signin', async (req, res) => {
+  // if(Parse.User.current()){
+  //   console.log("you");
+  // }else{
+  //   console.log("not you");
+  // }
+  try {
+    const user = await Parse.User.logIn(req.body.email , req.body.password );
+    res.send("you login successfuly")
+  } catch (error) {
+    res.send(error);
+}
+
+});
+
+app.post('/api/logout', async (req, res) => {
+  Parse.User.logOut();
+  res.send("ok");
+});
 app.listen(3000, () =>
   console.log(`Example app listening on port 3000!`),
 );
@@ -54,3 +74,4 @@ app.listen(3000, () =>
 // console.log("result => ",results);
 
 // }
+
