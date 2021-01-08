@@ -1,0 +1,1 @@
+{"message":"Account already exists for this username.","code":202,"level":"error","stack":"Error: Account already exists for this username.\n    at /home/nrges/Documents/web2/parse-server/node_modules/parse-server/lib/RestWrite.js:591:13\n    at processTicksAndRejections (internal/process/task_queues.js:97:5)","timestamp":"2021-01-08T08:13:12.572Z"}
