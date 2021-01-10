@@ -1,5 +1,6 @@
 express =require('express');
 Parse = require('parse/node');
+validator = require('validator');
 Parse.initialize("myAppId");
 Parse.serverURL = 'http://localhost:1337/parse'
 Parse.User.enableUnsafeCurrentUser()
@@ -8,7 +9,16 @@ const app = express();
 
 app.use(express.urlencoded({extended:false})); 
 app.post('/api/signup', async (req, res) => {
-  console.log(req.body);
+  console.log("------> ",Object.keys(req.body).length);
+  if(Object.keys(req.body).length != 2){
+    return res.status(400).json({message: "Request Length should be 2"});
+  }
+  if(req.body.password.length < 5){
+    return res.status(400).json({message: "filed `password`.length should be gt 5"});
+  }
+  if(validator.isEmail(req.body.email)){
+    return res.status(400).json({message:"filed `email` is not valid"});
+  }
   const user = new Parse.User();
   user.set("password", req.body.password);
   user.set("email", req.body.email);
@@ -16,10 +26,16 @@ app.post('/api/signup', async (req, res) => {
 
   try {
     await user.signUp();
-    return res.send('success pm');
+    return res.status(201).json({message:"user has been created."});
   } catch (error) {
+    if(error.code == 202){
+      return res.status(409).json({message:"email already exist."});
+    }
+    // if(error.code == 125){
+    //   return res.status(400).json({message:"filed `email` is not valid"});
+    // }
     console.log(error);
-    return res.send(error);
+    return res.json({message:error.message});
 }
 });
   
@@ -29,18 +45,28 @@ app.post('/api/signin', async (req, res) => {
   // }else{
   //   console.log("not you");
   // }
+  if(Object.keys(req.body).length != 2){
+    return res.status(400).json({message: "Request Length should be 2"});
+  }
+  if(!validator.isEmail(req.body.email)){
+    return res.status(400).json({message:"filed `email` is not valid"});
+  }
   try {
     const user = await Parse.User.logIn(req.body.email , req.body.password );
-    res.send("you login successfuly")
+    res.status(200).json({"token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZS"})
   } catch (error) {
-    res.send(error);
+    res.status(401).json({message:"wrong email or password."})
 }
 
 });
 
+app.get('/api/signin', async (req, res) => {
+  return res.status(405).json({message:"Only `Post` Method is Valid"});
+});
+
 app.post('/api/logout', async (req, res) => {
   Parse.User.logOut();
-  res.send("ok");
+  res.json({message:"ok"});
 });
 app.listen(3000, () =>
   console.log(`Example app listening on port 3000!`),
