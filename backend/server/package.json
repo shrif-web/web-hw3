@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "parse": "^2.19.0"
+    "parse": "^2.19.0",
+    "validator": "^13.5.2"
   }
 }
