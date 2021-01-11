@@ -1,8 +1,12 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { useFormFields } from "../libs/hooksLib";
-
 import "./Signup.css";
+var Parse = require('parse');
+// var ParseReact = require('parse-react');
+
+
+
 
 export default function Signup() {
   const [fields, handleFieldChange] = useFormFields({
@@ -21,6 +25,17 @@ export default function Signup() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const user = new Parse.User();
+    user.set("password", fields.password);
+    user.set("email", fields.email);
+    user.set("username", fields.email);
+
+    try {
+      await user.signUp();
+      console.log("user has been created.");
+    } catch (error) {
+      console.log(error.message);
+    }
 
     //setIsLoading(true);
 

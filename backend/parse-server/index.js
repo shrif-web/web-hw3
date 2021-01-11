@@ -15,7 +15,7 @@ var api = new ParseServer({
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": "http://localhost:1337/parse",
+      "serverURL": "http://localhost:1337/dashboard",
       "appId": "myAppId",
       "masterKey": "myMasterKey",
       "appName": "MyApp"

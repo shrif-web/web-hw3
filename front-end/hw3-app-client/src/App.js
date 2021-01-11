@@ -3,6 +3,9 @@ import { AppContext } from "./libs/contextLib";
 import Routes from "./Routes";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import "./App.css";
+var Parse = require('parse');
+Parse.initialize("myAppId");
+Parse.serverURL = 'http://localhost:1337/parse'
 
 function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);

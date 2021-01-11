@@ -9,14 +9,14 @@ const app = express();
 
 app.use(express.urlencoded({extended:false})); 
 app.post('/api/signup', async (req, res) => {
-  console.log("------> ",Object.keys(req.body).length);
+  console.log("------> ",Object.keys(req.body).length , req.body);
   if(Object.keys(req.body).length != 2){
     return res.status(400).json({message: "Request Length should be 2"});
   }
   if(req.body.password.length < 5){
     return res.status(400).json({message: "filed `password`.length should be gt 5"});
   }
-  if(validator.isEmail(req.body.email)){
+  if(!validator.isEmail(req.body.email)){
     return res.status(400).json({message:"filed `email` is not valid"});
   }
   const user = new Parse.User();
