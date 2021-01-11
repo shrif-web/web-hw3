@@ -3,8 +3,7 @@ import { useAppContext } from "../libs/contextLib";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import "./Login.css";
-var Parse = require('parse');
-
+var Parse = require("parse");
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();
@@ -20,13 +19,13 @@ export default function Login() {
     event.preventDefault();
     // userHasAuthenticated(true);
     // alert("log in!");
-    // history.push("/");
+    history.push("/dashboard");
     try {
-      const user = await Parse.User.logIn(email,password);
+      const user = await Parse.User.logIn(email, password);
       console.log("login successfully");
     } catch (error) {
       console.log("wrong email or password.");
-  }
+    }
   }
 
   return (

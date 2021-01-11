@@ -3,9 +3,9 @@ import { AppContext } from "./libs/contextLib";
 import Routes from "./Routes";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import "./App.css";
-var Parse = require('parse');
+var Parse = require("parse");
 Parse.initialize("myAppId");
-Parse.serverURL = 'http://localhost:1337/parse'
+Parse.serverURL = "http://localhost:1337/parse";
 
 function App() {
   const [isAuthenticated, userHasAuthenticated] = useState(false);
@@ -38,15 +38,25 @@ function App() {
           <Navbar.Collapse className="justify-content-end">
             <Nav>
               {isAuthenticated ? (
-                <Button
-                  onClick={handleLogout}
-                  variant="outline-primary"
-                  className="nav-btn1"
-                  size="sm"
-                  href="/login"
-                >
-                  Logout
-                </Button>
+                <>
+                  <Button
+                    onClick={handleLogout}
+                    variant="outline-primary"
+                    className="nav-btn1"
+                    size="sm"
+                    href="/login"
+                  >
+                    Logout
+                  </Button>
+                  <Button
+                    variant="outline-primary"
+                    className="nav-btn2"
+                    size="sm"
+                    href="/dashboard"
+                  >
+                    Logout
+                  </Button>
+                </>
               ) : (
                 <>
                   <Button

@@ -17,5 +17,5 @@
   background-color: white;
   margin-top: auto;
   margin-bottom: auto;
-  width: 400px;
+  width: 400px !important;
 }
