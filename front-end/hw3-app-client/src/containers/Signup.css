@@ -9,13 +9,9 @@
   }
 }
 
-.Signup {
-  margin: auto;
-}
-
 .card {
+  margin: auto;
   background-color: white;
-  margin-top: auto;
-  margin-bottom: auto;
-  width: 400px;
+  padding: 20px;
+  max-width: 300px;
 }

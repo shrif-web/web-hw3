@@ -26,7 +26,10 @@ export default function Home() {
           style={{ justifyContent: "center", margin: "auto" }}
         >
           {posts.map((post, index) => (
-            <div className="col-xs-12 col-sm-6 col-md-6 col-lg-4 p-2">
+            <div
+              className="col-xs-12 col-sm-6 col-md-6 col-lg-4 p-2"
+              key={index}
+            >
               <div className="card" style={{ width: "auto" }}>
                 <div className="card-body">
                   <h3>{post.subject}</h3>
