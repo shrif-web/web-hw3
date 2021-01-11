@@ -27,7 +27,7 @@ export default function Home() {
         >
           {posts.map((post, index) => (
             <div className="col-xs-12 col-sm-6 col-md-6 col-lg-4 p-2">
-              <div className="card">
+              <div className="card" style={{ width: "auto" }}>
                 <div className="card-body">
                   <h3>{post.subject}</h3>
                   {post.text}
