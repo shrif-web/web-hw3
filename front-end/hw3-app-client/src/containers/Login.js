@@ -17,12 +17,14 @@ export default function Login() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    // userHasAuthenticated(true);
+    //
     // alert("log in!");
-    history.push("/dashboard");
+
     try {
       const user = await Parse.User.logIn(email, password);
       console.log("login successfully");
+      userHasAuthenticated(true);
+      history.push("/dashboard");
     } catch (error) {
       console.log("wrong email or password.");
     }
