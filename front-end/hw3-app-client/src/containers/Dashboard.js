@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Button, Form } from "react-bootstrap";
 import "./Dashboard.css";
 
@@ -7,10 +7,10 @@ import Parse from "../Parse.js";
 export default function Dashboard() {
   
 var states = [];
-   states = [
-     { subject: " 1", text: "Hello" , id : 0 , auther:"me"},
+  //  states = [
+  //    { subject: " 1", text: "Hello" , id : 0 , auther:"me"},
   
-  { subject: "pst 3", text: "Hello" ,id:4 ,auther:"yoi"},];
+  // { subject: "pst 3", text: "Hello" ,id:4 ,auther:"yoi"},];
 
   const [posts, setPosts] = useState(states);
   const [newSubject, setNewSubject] = useState("");
@@ -21,12 +21,21 @@ var states = [];
   function handleDelete(idx) {
 
     console.log(idx);
+
     const Post = Parse.Object.extend("Post");
     const query = new Parse.Query(Post);
+
+    const i = posts.findIndex(x => x.id === idx)
+    alert(i);
     query.get(idx)
     .then((post) => {
+      console.log(post);
       post.destroy()
-      .then((myObject) => { alert('deleted')
+
+      .then((myObject) => { 
+        posts.splice(i,1);
+        setPosts([...posts]);
+        alert('deleted')
       }, (error) => {
         alert('delete failed!')
       });
@@ -47,15 +56,15 @@ var states = [];
     mpost.set("subject", newSubject);
     mpost.set("text", newText);
     mpost.set("auther" , Parse.User.current().getUsername());
+    
+    
     var name ="";
 
     mpost.save()
-    .then((mpost) => {      
-      posts.push({subject: newSubject, text: newText , id:mpost.id , auther: Parse.User.current().getUsername()});
+    .then((mpost) => {    
+      setPosts([...posts,{subject: newSubject, text: newText , id:mpost.id , auther: Parse.User.current().getUsername()}]);
       alert('New object created with objectId: ' + mpost.newSubject);
     }, (error) => {
-      // Execute any logic that should take place if the save fails.
-      // error is a Parse.Error with an error code and message.
       alert('Failed to create new object, with error code: ' + error.message);
     });
 
@@ -65,20 +74,39 @@ var states = [];
     return newSubject.length > 0 && newText.length > 0;
   }
 
-  function renderPosts() {
-  
+
+
+  useEffect(() => {
  
     const Post = Parse.Object.extend("Post");
 
     const query = new Parse.Query(Post);
 
+    
     query.equalTo("auther", Parse.User.current().getUsername())
 
     
     query.find().then(resp => {
-       setPosts(resp);
-        console.log(resp);
+      const ps = resp.map(x => ({
+        subject: x.get("subject"),
+        text: x.get("text") ,
+        id: x.id ,
+        auther: x.get("auther")})
+       )
+       setPosts(ps);
+  
     });
+  
+
+   
+  
+}, []);
+
+
+  
+  function renderPosts() {
+  
+
 
 
     if (posts.length === 0)
