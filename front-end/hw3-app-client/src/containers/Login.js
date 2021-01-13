@@ -3,7 +3,7 @@ import { useAppContext } from "../libs/contextLib";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import "./Login.css";
-import Parse from "../Parse.js"
+import Parse from "../Parse.js";
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();

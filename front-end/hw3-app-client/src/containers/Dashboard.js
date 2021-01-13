@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./Dashboard.css";
 
-import {Parse} from "../Parse.js"
+import Parse from "../Parse.js";
 
 export default function Dashboard() {
   
 var states = [];
    states = [
-     { subject: " 1", text: "Hello" , id : 0},
+     { subject: " 1", text: "Hello" , id : 0 , auther:"me"},
   
-  { subject: "pst 3", text: "Hello" ,id:4},];
+  { subject: "pst 3", text: "Hello" ,id:4 ,auther:"yoi"},];
 
   const [posts, setPosts] = useState(states);
   const [newSubject, setNewSubject] = useState("");
   const [newText, setNewText] = useState("");
+  const [newAuther, setNewAuther] = useState("");
+
 
   function handleDelete(idx) {
 
@@ -44,13 +46,13 @@ var states = [];
     
     mpost.set("subject", newSubject);
     mpost.set("text", newText);
+    mpost.set("auther" , Parse.User.current().getUsername());
+    var name ="";
 
     mpost.save()
-    .then((mpost) => {
-      // Execute any logic that should take place after the object is saved.
-      posts.push({subject: newSubject, text: newText , id:mpost.id});
-
-      alert('New object created with objectId: ' + mpost.id);
+    .then((mpost) => {      
+      posts.push({subject: newSubject, text: newText , id:mpost.id , auther: Parse.User.current().getUsername()});
+      alert('New object created with objectId: ' + mpost.newSubject);
     }, (error) => {
       // Execute any logic that should take place if the save fails.
       // error is a Parse.Error with an error code and message.
@@ -64,37 +66,19 @@ var states = [];
   }
 
   function renderPosts() {
-    // var apost = new Parse.Object("Post");
-    // Parse.Object.fetchAll(apost, {
-    //   success: function(list) {
-    //     posts = list;
-    //     console.log(posts)
+  
+ 
+    const Post = Parse.Object.extend("Post");
 
-        
-    //   },
-    //   error: function(error) {
-    //     // An error occurred while fetching one of the objects.
-    //   },
-    // });
+    const query = new Parse.Query(Post);
 
-    var Post = Parse.Object.extend("Post");
-  var query = new Parse.Query(Post);
+    query.equalTo("auther", Parse.User.current().getUsername())
 
-query.find().then((res) => {
-  for (let r in res ){
-    query.get(r.id)
-    .then((post) => {
-      posts.push({subject: post.subject, text: post.text , id:post.id});
-
-      }, (error) => {
+    
+    query.find().then(resp => {
+       setPosts(resp);
+        console.log(resp);
     });
-
-
-  }
-}, (error) => {
-  // The object was not retrieved successfully.
-  // error is a Parse.Error with an error code and message.
-});
 
 
     if (posts.length === 0)
@@ -111,7 +95,7 @@ query.find().then((res) => {
             {post.text}
             <p>
               <br />
-              Published by: {post.auth}
+              Published by: {post.auther}
             </p>
             <Button
               variant="outline-danger"

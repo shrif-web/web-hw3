@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { useFormFields } from "../libs/hooksLib";
 import "./Signup.css";
 
-import Parse from "../Parse.js"
+import Parse from "../Parse.js";
 // var ParseReact = require('parse-react');
 
 export default function Signup() {
