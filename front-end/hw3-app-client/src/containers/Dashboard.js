@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./Dashboard.css";
 
-const Parse = require('parse');
+import {Parse} from "../Parse.js"
 
 export default function Dashboard() {
   
@@ -179,8 +179,8 @@ query.find().then((res) => {
         </Form>
       </div>
       <br />
-      <div className="row" style={{ justifyItems: "center", margin: "auto" }}
-        onLoad={renderPosts}>
+      <div className="row" style={{ justifyItems: "center", margin: "auto" }}>
+        {renderPosts()}
       </div>
       <br />
       <br />

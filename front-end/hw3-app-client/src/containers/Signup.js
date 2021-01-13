@@ -2,7 +2,8 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { useFormFields } from "../libs/hooksLib";
 import "./Signup.css";
-var Parse = require("parse");
+
+import Parse from "../Parse.js"
 // var ParseReact = require('parse-react');
 
 export default function Signup() {

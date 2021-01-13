@@ -3,7 +3,7 @@ import { useAppContext } from "../libs/contextLib";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import "./Login.css";
-var Parse = require("parse");
+import Parse from "../Parse.js"
 
 export default function Login() {
   const { userHasAuthenticated } = useAppContext();
@@ -50,7 +50,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-        <Button block size="lg" type="submit" disabled={!validateForm()} onClick={handleSubmit}>
+        <Button block size="lg" type="submit" disabled={!validateForm()}>
           Login
         </Button>
       </Form>
