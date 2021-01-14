@@ -1,9 +1,12 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import Dashboard from "./containers/Dashboard";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
 export default function Routes() {
   return (
@@ -11,15 +14,17 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
       </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <Route exact path="/signup">
+
+      <UnauthenticatedRoute exact path="/signup">
         <Signup />
-      </Route>
-      <Route exact path="/dashboard">
+      </UnauthenticatedRoute>
+      <UnauthenticatedRoute exact path="/login">
+        <Login />
+      </UnauthenticatedRoute>
+
+      <AuthenticatedRoute exact path="/dashboard">
         <Dashboard />
-      </Route>
+      </AuthenticatedRoute>
     </Switch>
   );
 }

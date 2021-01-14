@@ -1,15 +1,14 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./Dashboard.css";
 
 import Parse from "../Parse.js";
 
 export default function Dashboard() {
-  
-var states = [];
+  var states = [];
   //  states = [
   //    { subject: " 1", text: "Hello" , id : 0 , auther:"me"},
-  
+
   // { subject: "pst 3", text: "Hello" ,id:4 ,auther:"yoi"},];
 
   const [posts, setPosts] = useState(states);
@@ -17,31 +16,33 @@ var states = [];
   const [newText, setNewText] = useState("");
   const [newAuther, setNewAuther] = useState("");
 
-
   function handleDelete(idx) {
-
     console.log(idx);
 
     const Post = Parse.Object.extend("Post");
     const query = new Parse.Query(Post);
 
-    const i = posts.findIndex(x => x.id === idx)
+    const i = posts.findIndex((x) => x.id === idx);
     alert(i);
-    query.get(idx)
-    .then((post) => {
-      console.log(post);
-      post.destroy()
+    query.get(idx).then(
+      (post) => {
+        console.log(post);
+        post
+          .destroy()
 
-      .then((myObject) => { 
-        posts.splice(i,1);
-        setPosts([...posts]);
-        alert('deleted')
-      }, (error) => {
-        alert('delete failed!')
-      });
-      }, (error) => {
-    });
-    
+          .then(
+            (myObject) => {
+              posts.splice(i, 1);
+              setPosts([...posts]);
+              alert("deleted");
+            },
+            (error) => {
+              alert("delete failed!");
+            }
+          );
+      },
+      (error) => {}
+    );
   }
 
   function handleEdit(index) {
@@ -52,63 +53,55 @@ var states = [];
   function handleCreate() {
     const Post = Parse.Object.extend("Post");
     const mpost = new Post();
-    
+
     mpost.set("subject", newSubject);
     mpost.set("text", newText);
-    mpost.set("auther" , Parse.User.current().getUsername());
-    
-    
-    var name ="";
+    mpost.set("auther", Parse.User.current().getUsername());
 
-    mpost.save()
-    .then((mpost) => {    
-      setPosts([...posts,{subject: newSubject, text: newText , id:mpost.id , auther: Parse.User.current().getUsername()}]);
-      alert('New object created with objectId: ' + mpost.newSubject);
-    }, (error) => {
-      alert('Failed to create new object, with error code: ' + error.message);
-    });
+    var name = "";
 
+    mpost.save().then(
+      (mpost) => {
+        setPosts([
+          ...posts,
+          {
+            subject: newSubject,
+            text: newText,
+            id: mpost.id,
+            auther: Parse.User.current().getUsername(),
+          },
+        ]);
+        alert("New object created with objectId: " + mpost.newSubject);
+      },
+      (error) => {
+        alert("Failed to create new object, with error code: " + error.message);
+      }
+    );
   }
 
   function validateNewPost() {
     return newSubject.length > 0 && newText.length > 0;
   }
 
-
-
   useEffect(() => {
- 
     const Post = Parse.Object.extend("Post");
 
     const query = new Parse.Query(Post);
 
-    
-    query.equalTo("auther", Parse.User.current().getUsername())
+    query.equalTo("auther", Parse.User.current().getUsername());
 
-    
-    query.find().then(resp => {
-      const ps = resp.map(x => ({
+    query.find().then((resp) => {
+      const ps = resp.map((x) => ({
         subject: x.get("subject"),
-        text: x.get("text") ,
-        id: x.id ,
-        auther: x.get("auther")})
-       )
-       setPosts(ps);
-  
+        text: x.get("text"),
+        id: x.id,
+        auther: x.get("auther"),
+      }));
+      setPosts(ps);
     });
-  
+  }, []);
 
-   
-  
-}, []);
-
-
-  
   function renderPosts() {
-  
-
-
-
     if (posts.length === 0)
       return (
         <div className="card p-2">
@@ -119,7 +112,7 @@ var states = [];
       <div className="col-xs-12 col-sm-6 col-md-6 col-lg-4 p-2" key={index}>
         <div className="card" style={{ width: "auto" }}>
           <div className="card-body">
-            <h3 id = "subject">{post.subject}</h3>
+            <h3 id="subject">{post.subject}</h3>
             {post.text}
             <p>
               <br />
@@ -128,12 +121,9 @@ var states = [];
             <Button
               variant="outline-danger"
               className="m-1"
-              onClick={ function()
-              {
+              onClick={function () {
                 handleDelete(post.id);
-              }
-            
-            }
+              }}
               size="sm"
               href="#"
             >
@@ -168,7 +158,6 @@ var states = [];
             size="sm"
             href="#"
             onClick={handleCreate}
-
           >
             CREATE NEW POST
           </Button>
